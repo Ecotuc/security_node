@@ -15,23 +15,36 @@ const Login = () => {
             ...logininfo,
             [e.target.name] : e.target.value,
         })
-        console.log('escribo');
     }
     
-    const { username, password, token } = logininfo;
+    const { username, password } = logininfo;
 
     const showsubmitbutton = () => {
         return(username !== "" && username !== null && username !== undefined && password !== '')
     }
 
-    const loginattempt = e => {
+    const loginattempt = async e => {
         e.preventDefault();
-        
-        if(true){
-            logged = true;
-        }
-
-
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(
+                { 
+                    "username": "mario1",
+                    "password": "P_@ssw0rdS4p3rSecuR3" 
+                }
+            )
+        };
+        const answer = await fetch('https://private-5bf7ee-igsoftwaremoduloseguridad.apiary-mock.com/api/node/user/auth', requestOptions)
+            .then(response => {
+                return response.json();
+            });
+            setlogininfo({
+                ...logininfo,
+                token: answer.data.token
+            });
+            window.localStorage.setItem("token", answer.data.token);
+            alert(answer.message);
     }
 
 
