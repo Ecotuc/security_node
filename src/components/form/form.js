@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import Apps from '../apps/apps';
 
 import './form.scss';
 
-const Form = ({route}) => {
+const Form = ({routes}) => {
+    var form = null;
+    var { route, route_title } = routes; 
+
     if(route.includes("Apps")){
         route = route.substr(route.indexOf("Apps")+4,route.length);
-        
-
-
+        form =
+            <Apps 
+                service = {route}
+            />
         console.log("Apps");
     }else if(route.includes("Groups")){
         route = route.substr(route.indexOf("Groups")+6,route.length);
@@ -30,7 +35,14 @@ const Form = ({route}) => {
 
 
 
-    return ( null );
+    return ( 
+        <Fragment>
+            <div className='form_square'>
+                <h3>{ route_title }</h3>
+                {form} 
+            </div>
+        </Fragment>
+        );
 }
  
 export default Form;

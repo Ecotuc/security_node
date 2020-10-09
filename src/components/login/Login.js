@@ -1,6 +1,9 @@
 import React, { Fragment } from 'react';
-import './login.scss';
 
+
+import Button from '../button/button';
+import './login.scss';
+import { showsubmitbutton } from '../../util/show_submit_button';
 
 const Login = ({logininfo, setlogininfo}) => {
 
@@ -15,21 +18,13 @@ const Login = ({logininfo, setlogininfo}) => {
     
     const { username, password } = logininfo;
 
-    const showsubmitbutton = () => {
-        return(username !== "" && username !== null && username !== undefined && password !== '')
-    }
 
     const loginattempt = async e => {
         e.preventDefault();
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(
-                { 
-                    "username": "mario1",
-                    "password": "P_@ssw0rdS4p3rSecuR3" 
-                }
-            )
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify(logininfo)
         };
         const answer = await fetch('https://private-5bf7ee-igsoftwaremoduloseguridad.apiary-mock.com/api/node/user/auth', requestOptions)
             .then(response => {
@@ -52,6 +47,7 @@ const Login = ({logininfo, setlogininfo}) => {
             <div className='login_square'>
                 <h3>Log in</h3>
                 <form className='form_login' onSubmit={loginattempt}>
+                    
                     <label>Username</label>
                     <input
                         type="text"
@@ -59,7 +55,8 @@ const Login = ({logininfo, setlogininfo}) => {
                         className="u-full-width"
                         onChange={handleChange}
                         value= {username}
-                        />
+                        placeholder="Username"
+                    />
                     <label>Password</label>
                     <input
                         type="password"
@@ -69,9 +66,11 @@ const Login = ({logininfo, setlogininfo}) => {
                         value= {password}
                     />
                     
-                    <button className= {`login_button ${showsubmitbutton() ? 'show': ''}`}>
-                        Log in
-                    </button>
+                    <Button 
+                        text ="Login"
+                        onClick = {null}
+                        className= {showsubmitbutton(Object.values(logininfo)) ? 'show': ''}
+                    />
                 </form>
             </div>
         </Fragment>

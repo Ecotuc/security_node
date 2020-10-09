@@ -8,19 +8,22 @@ function App() {
   const [logininfo, setlogininfo] = useState({
     username: '',
     password: '',
-    token: '',
-    success: false
   });
  
-  const [route, setroute] = useState("/");
+  const [routes, setroutes] = useState({
+    route:'',
+    route_title: ''
+  });
+
+  const { route } = routes;
   const { token } = logininfo;
   
   var title = <h1 className="title">Security node</h1>
   var actual = null;
 
-
-  // if(token !== "" || token !== null || token !== undefined)
-  if(token !== "") /* TODO */  // Temp para saltar login
+// debugger
+  if(token === "" || token === null || token === undefined)
+  // if(token === "") /* TODO */  // Temp para saltar login
   {
     actual =  
       <Login 
@@ -32,12 +35,12 @@ function App() {
     actual = 
     <Menu
       route = {route}
-      setroute = {setroute}
+      setroutes = {setroutes}
     />;
   }else {
     actual = 
     <Form
-      route = {route}
+      routes = {routes}
     />
   }
 
