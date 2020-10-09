@@ -1,14 +1,10 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import './login.scss';
 
 
-const Login = () => {
+const Login = ({logininfo, setlogininfo}) => {
 
-    const [logininfo, setlogininfo] = useState({
-        username: '',
-        password: '',
-        token: ''
-    });
+    
 
     const handleChange = e =>{
         setlogininfo({
@@ -39,12 +35,15 @@ const Login = () => {
             .then(response => {
                 return response.json();
             });
-            setlogininfo({
-                ...logininfo,
-                token: answer.data.token
-            });
-            window.localStorage.setItem("token", answer.data.token);
             alert(answer.message);
+            if(answer.success){
+                setlogininfo({
+                    ...logininfo,
+                    token: answer.data.token,
+                    success: answer.success
+                });
+                window.localStorage.setItem("token", answer.data.token);
+            }
     }
 
 
