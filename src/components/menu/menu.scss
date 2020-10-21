@@ -1,18 +1,46 @@
+::-webkit-scrollbar{
+    width: 8px !important;
+}
+::-webkit-scrollbar-thumb{
+    border-radius: 50px;
+    width: 10px;
+    background: rgb(61,61,94);
+    background: linear-gradient(180deg, rgba(61,61,94,1) 0%, rgba(255,255,255,1) 25%, rgba(255,255,255,1) 75%, rgba(61,61,94,1) 100%);
+}
+::-webkit-scrollbar-track{
+    // background: rgb(52, 52, 80);
+    border-radius: 50px;
+
+}
+
+.side_nav{
+    position: absolute;
+    top: 80px;
+    left: 0;
+    height: 80vh !important;
+    max-height: 80vh !important;
+    overflow-y: scroll;
+    
+}
+
 ul{
     list-style:none;
 }
 
 .primary_li{ 
-    width: 400px;
-    li:last-child ul li:last-child{
-        margin-bottom: 100px;
+    position: relative;
+    width: 200px;
+    li{
+        padding-right: 12px;
     }
 }
 
 li h3{
+    font-size: 28px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-left: 12px;
     cursor: pointer;
     &:hover{
 
@@ -21,6 +49,7 @@ li h3{
     }
 }
 .second_li{
+    
     display: none;
     list-style: none;
     &.show{
@@ -30,11 +59,13 @@ li h3{
     li{
         cursor: pointer;
         position: relative;
-        padding: 0 20px;
-        height: 50px;
-        width: 400px;
+        padding: 0 10px;
+        width: 150px;
         background-color: transparent;
-
+        
+        h4{
+            font-size: 18px;
+        }    
 
         &:before{
             height: 0;
@@ -48,8 +79,7 @@ li h3{
         }
 
         &:hover:before{
-            height: 50px;
-            width: 400px;
+            width: 150px;
             border: 1px solid white;
             border-right: none;
             border-top: none;

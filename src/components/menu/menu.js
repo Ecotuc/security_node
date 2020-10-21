@@ -1,24 +1,25 @@
-import React, { Fragment } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
+import React, { Fragment } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
 import './menu.scss';
 
 const Menu = ({routes, setroutes}) => {
 
-const handleToggle = e =>{
-    if(!e.target.nextElementSibling.classList.contains('show')){
-        e.target.nextElementSibling.classList.add('show');
-    }else{
-        e.target.nextElementSibling.classList.remove('show');
+    const handleCollapse = e =>{
+        if(!e.target.nextElementSibling.classList.contains('show')){
+            e.target.nextElementSibling.classList.add('show');
+        }else{
+            e.target.nextElementSibling.classList.remove('show');
+        }
     }
-}
 
     return ( 
         <Fragment>
-            <ul className="primary_li">
+            <div className = "side_nav">
+                <ul className="primary_li">
                 <li>
-                    <h3 onClick={ handleToggle } >Apps <FontAwesomeIcon icon={faAngleRight}/></h3> 
+                    <h3 onClick={ handleCollapse } >Apps <FontAwesomeIcon icon={faAngleRight}/></h3> 
                     <ul className="second_li">
                         <li onClick={ () => setroutes({ route: "AppsCreate", route_title: "Create app"}) }><h4>Create</h4></li>
                         <li onClick={ () => setroutes({ route: "AppsList", route_title: "List apps"}) }><h4>List</h4></li>
@@ -28,7 +29,7 @@ const handleToggle = e =>{
                     </ul>
                 </li>
                 <li>
-                    <h3 onClick={ handleToggle } >Groups <FontAwesomeIcon icon={faAngleRight}/></h3> 
+                    <h3 onClick={ handleCollapse } >Groups <FontAwesomeIcon icon={faAngleRight}/></h3> 
                     <ul className="second_li">
                         <li onClick={ () => setroutes({ route: "GroupsCreate", route_title: "Create group"}) }><h4>Create</h4></li>
                         <li onClick={ () => setroutes({ route: "GroupsList", route_title: "List groups"}) }><h4>List</h4></li>
@@ -41,7 +42,7 @@ const handleToggle = e =>{
                     </ul>
                 </li>
                 <li>
-                    <h3 onClick={ handleToggle } >Roles <FontAwesomeIcon icon={faAngleRight}/></h3> 
+                    <h3 onClick={ handleCollapse } >Roles <FontAwesomeIcon icon={faAngleRight}/></h3> 
                     <ul className="second_li">
                         <li onClick={ () => setroutes({ route: "RolesCreate", route_title: "Create role"}) }><h4>Create</h4></li>
                         <li onClick={ () => setroutes({ route: "RolesList", route_title: "List roles"}) }><h4>List</h4></li>
@@ -58,7 +59,7 @@ const handleToggle = e =>{
                     </ul>
                 </li>
                 <li>
-                    <h3 onClick={ handleToggle } > Permissions <FontAwesomeIcon icon={faAngleRight}/></h3> 
+                    <h3 onClick={ handleCollapse } > Permissions <FontAwesomeIcon icon={faAngleRight}/></h3> 
                     <ul className="second_li">
                         <li onClick={ () => setroutes({ route: "PermissionsCreate", route_title: "Create permission"}) }><h4>Create</h4></li>
                         <li onClick={ () => setroutes({ route: "PermissionsList", route_title: "List permissions"}) }><h4>List</h4></li>
@@ -70,7 +71,7 @@ const handleToggle = e =>{
                     </ul>
                 </li>
                 <li>
-                    <h3 onClick={ handleToggle } > Users <FontAwesomeIcon icon={faAngleRight}/></h3> 
+                    <h3 onClick={ handleCollapse } > Users <FontAwesomeIcon icon={faAngleRight}/></h3> 
                     <ul className="second_li">
                         <li onClick={ () => setroutes({ route: "UsersCreate", route_title: "Create user"}) }><h4>Create</h4></li>
                         <li onClick={ () => setroutes({ route: "UsersList", route_title: "List users"}) }><h4>List</h4></li>
@@ -83,6 +84,7 @@ const handleToggle = e =>{
                 </li>
                                
             </ul>
+            </div>
         </Fragment>
      );
 }

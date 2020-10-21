@@ -1,18 +1,132 @@
 .form_square{
-    border: 1px solid white;
+    
+    padding: 0 24px;
     border-radius: 10px;
-    padding: 24px;
     display: flex;
+    width: 100%;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+    // background: blue;
+    .form_title{
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 24px;
+        
+        .module-border-wrap {
+            height: 100%;
+            max-height: 100%;
+            position: relative;
+            background: linear-gradient(to right, white, var(--dblue) );
+            padding: 0;
+            height: 50px;
+        }
+        
+        .module {
+            padding-right: 50px;
+            background: rgb(61,61,94);
+            height: calc(100% - 1px);
+        } 
+    }
 }
 
+
 .form{
+    width: 50%;
+    transition: 2s ease;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    padding: 24px 0;
+    align-items: flex-start;
+    visibility: hidden;
+    opacity: 0;
+
+    &.show{
+        visibility: visible;
+        opacity: 1;
+    }
     label{
         display: flex;
         align-self: flex-start;
+    }
+
+    .input-row{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        .input-group{
+            display: flex;
+            flex-direction: column;
+        }
+    }
+};
+
+input, select, textarea{
+    // display: none;
+    border-radius: 0 !important;
+    background: none !important;
+    width: 200px !important;
+    color: white;
+    border: none !important; 
+    border-bottom: 1px solid white !important;
+    height: fit-content !important;
+}
+
+::placeholder , select{
+    color: white;
+    opacity: 0.6; 
+  }
+
+
+.table{
+    padding:24px;
+    width: calc(100% - 200px);
+    transition: 0.6s ease;
+    visibility: hidden;
+    opacity: 0;
+    background: var(--dblue);
+    background: linear-gradient(180deg, var(--dblue) 0%, rgba(39,39,66,1) 50%, rgba(39,39,66,1) 75%, var(--dblue) 100%);
+
+    
+    &.show{
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .table_titles{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 24px;
+        h5{
+            width: 200px;
+        }
+        
+    }
+    .table_row{
+        width: 100%;
+        padding: 0;
+        display: flex;
+        justify-content: space-between;
+        &:not(:last-child){
+            border-bottom: solid 1px white;
+            margin-bottom: 20px;
+        }
+        div{
+            padding: 0 0 12px 0;
+            width: 200px;
+            display: flex;
+            align-items: flex-end;
+            text-align: left;
+        }
+        .actions{
+            display: flex;
+            justify-content: space-around;
+            cursor: pointer;
+            i{
+                padding: 12px 18px;
+            }
+        }
+        
     }
 }

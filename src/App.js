@@ -1,9 +1,16 @@
 import React, { Fragment, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
+
 import Form from './components/form/form';
 import Login from './components/login/login';
 import Menu from './components/menu/menu';
 
 function App() {
+
+  const handleAction = e =>{
+    debugger
+  }
   
   const [logininfo, setlogininfo] = useState({
     username: '',
@@ -11,19 +18,43 @@ function App() {
   });
  
   const [routes, setroutes] = useState({
-    route:'',
+    route:'/',
     route_title: ''
   });
 
-  const { route } = routes;
-  const { token } = logininfo;
-  
-  var title = <h1 className="title">Security node</h1>
-  var actual = null;
+  const goHome = () => {
+    setroutes({
+      route: "/"
+    });
+  }
 
-// debugger
-  if(token === "" || token === null || token === undefined)
-  // if(token === "") /* TODO */  // Temp para saltar login
+  const { route, route_title } = routes;
+  const { token } = logininfo;
+
+  var title = <h1 className="title">Security node</h1>;
+  var actual = null;
+  
+  if (route !== "/" && route !=="" && route !== undefined && route !== null){
+    title = 
+    <Fragment>
+      <div className = "nav">
+        <div className = "goBack">
+          <FontAwesomeIcon onClick={goHome} icon={faHome}/>
+        </div>
+        <h1 className="title">Security node</h1>
+      </div>
+    </Fragment>;
+  }else{
+    title =
+    <Fragment>
+      <div className = "nav">
+        <h1 className="title">Security node</h1>
+      </div>
+    </Fragment>;
+  }
+
+  // if(token === "" || token === null || token === undefined)
+  if(token === "") /* TODO */  // Temp para saltar login
   {
     actual =  
       <Login 
@@ -31,17 +62,20 @@ function App() {
         setlogininfo = {setlogininfo}
       />;
     
-  }else if(route === "" || route === "/"){
+  }else{
     actual = 
-    <Menu
-      route = {route}
-      setroutes = {setroutes}
-    />;
-  }else {
-    actual = 
-    <Form
-      routes = {routes}
-    />
+    <Fragment>
+      <Form
+        routes = { routes }
+        setroutes = { setroutes }
+      />
+
+    </Fragment>;
+    setTimeout(() => {
+      if(route_title !== "" && document.getElementById("form")){
+        document.getElementById("form").classList.add("show");
+      }
+    }, 500);
   }
 
 
@@ -50,8 +84,14 @@ function App() {
 
   return(
     <Fragment>
-      {title}
-      {actual}
+      { title }
+      <Menu 
+        route = { route }
+        setroutes = { setroutes }
+      />
+      <div className = "content">
+        { actual }
+      </div>
     </Fragment>
   )
 }
