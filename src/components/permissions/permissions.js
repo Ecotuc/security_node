@@ -34,7 +34,7 @@ const Permissions = ( { service } ) => {
         })
     }
     
-    const { name, description, permissions, nodeid } = permission;
+    const { name, description, nodeid } = permission;
 
     // var permissions = {
     //     "name": "permissionname",

@@ -23,9 +23,9 @@ const Menu = ({routes, setroutes}) => {
                     <ul className="second_li">
                         <li onClick={ () => setroutes({ route: "AppsCreate", route_title: "Create app"}) }><h4>Create</h4></li>
                         <li onClick={ () => setroutes({ route: "AppsList", route_title: "List apps"}) }><h4>List</h4></li>
-                        <li onClick={ () => setroutes({ route: "AppsDetails", route_title: "App details"}) }><h4>Details</h4></li>
+                        {/* <li onClick={ () => setroutes({ route: "AppsDetails", route_title: "App details"}) }><h4>Details</h4></li>
                         <li onClick={ () => setroutes({ route: "AppsDelete", route_title: "Delete app"}) }><h4>Delete</h4></li>
-                        <li onClick={ () => setroutes({ route: "AppsUpdate", route_title: "Update app"}) }><h4>Update</h4></li>
+                        <li onClick={ () => setroutes({ route: "AppsUpdate", route_title: "Update app"}) }><h4>Update</h4></li> */}
                     </ul>
                 </li>
                 <li>

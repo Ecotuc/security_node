@@ -6,10 +6,35 @@ import Roles from '../roles/roles';
 
 import './form.scss';
 
+export const sendGetReq = async (endpoint, ttitles, trows, table) => {
+    window.localStorage.setItem("pass", "true");
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', 'Authorization': window.localStorage.getItem("token")},
+        // body: JSON.stringify(req)
+    };
+    const answer = await fetch(endpoint, requestOptions)
+        .then(response => {
+         return response.json();
+        });
+        if(answer.success && window.localStorage.getItem("pass") === "true"){
+            window.localStorage.setItem("data", JSON.stringify(answer.data));
+            // arr_titles = Object.keys(answer.data[0]);
+            // arr_data = answer.data;
+            window.localStorage.setItem("pass", "false");
+        }
+}
 const Form = ({routes, setroutes}) => {
-    const handleAction = e =>{
-        debugger
-      }
+
+
+    sendGetReq("https://private-aa280a-igsoftwaremoduloseguridad.apiary-mock.com/api/node/list", "table_titles", "table_rows", "table");
+
+
+
+
+
+
+
     var form = null;
     var render = null;
     var { route, route_title } = routes; 
@@ -22,6 +47,7 @@ const Form = ({routes, setroutes}) => {
             form =
                 <Apps 
                     service = { route }
+                    setroutes = { setroutes }
                 />;
             console.log("Apps");
         }else if(route.includes("Groups")){

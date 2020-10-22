@@ -34,7 +34,7 @@ const Roles = ( { service } ) => {
         })
     }
     
-    const { name, description, roles, nodeid } = role;
+    const { name, description, nodeid } = role;
 
     // var roles = {
     //     "name": "rolename",

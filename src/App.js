@@ -7,10 +7,6 @@ import Login from './components/login/login';
 import Menu from './components/menu/menu';
 
 function App() {
-
-  const handleAction = e =>{
-    debugger
-  }
   
   const [logininfo, setlogininfo] = useState({
     username: '',
