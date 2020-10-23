@@ -1,15 +1,16 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import Apps from '../apps/apps';
 import Groups from '../groups/groups';
 import Permissions from '../permissions/permissions';
 import Roles from '../roles/roles';
+import Settings from '../settings/settings';
 
 import './form.scss';
 
 export const sendGetReq = async (endpoint, ttitles, trows, table) => {
     window.localStorage.setItem("pass", "true");
     const requestOptions = {
-        method: 'GET',
+        method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': window.localStorage.getItem("token")},
         // body: JSON.stringify(req)
     };
@@ -25,15 +26,18 @@ export const sendGetReq = async (endpoint, ttitles, trows, table) => {
         }
 }
 const Form = ({routes, setroutes}) => {
+  const endpointpri = window.localStorage.getItem("endpointpri");
 
 
-    sendGetReq("https://private-aa280a-igsoftwaremoduloseguridad.apiary-mock.com/api/node/list", "table_titles", "table_rows", "table");
+    sendGetReq(endpointpri+"/api/node/list", "table_titles", "table_rows", "table");
+
+    const [node, setnode] = useState("");
+    const [group, setgroup] = useState({})
+    const [role, setrole] = useState({})
+    const [permission, setpermission] = useState({})
 
 
-
-
-
-
+    
 
     var form = null;
     var render = null;
@@ -48,6 +52,7 @@ const Form = ({routes, setroutes}) => {
                 <Apps 
                     service = { route }
                     setroutes = { setroutes }
+                    setnode = { setnode }
                 />;
             console.log("Apps");
         }else if(route.includes("Groups")){
@@ -72,8 +77,19 @@ const Form = ({routes, setroutes}) => {
                 />;                
             console.log("Permissions");
         }else if(route.includes("Users")){
-            route = route.substr(route.indexOf("Users") + 11,route.length);
+            route = route.substr(route.indexOf("Users") + 5,route.length);
             console.log("Users");
+        }else if(route.includes("Settings")){
+            route = route.substr(route.indexOf("Settings") + 8,route.length);
+            console.log("Settings");
+            form = 
+                <Settings
+                    node = { node }
+                    setroutes = { setroutes }
+                    setgroup = { setgroup }
+                    setrole = { setrole }
+                    setpermission = { setpermission }
+                />
         }
         render =
             <Fragment>

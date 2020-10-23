@@ -6,9 +6,9 @@ import { sendPostReq } from '../../util/send_req';
 import { toUpperFirst } from '../../util/to_uppercase_first';
 import './apps.scss';
 
-const Apps = ( { service, setroutes } ) => {
-    
-    
+const Apps = ( { service, setroutes, setnode } ) => {
+  
+    const endpointpri = window.localStorage.getItem("endpointpri");
     // var parse = require('html-react-parser');
     // parse(form)
     var arr_titles = [];
@@ -22,7 +22,7 @@ const Apps = ( { service, setroutes } ) => {
         description:''
     });
     
-    const [node, setnodeinfo] = useState({
+    const [nodeinfo, setnodeinfo] = useState({
         nodeid:''
     });
     
@@ -31,9 +31,9 @@ const Apps = ( { service, setroutes } ) => {
         switch(op){
             case "node":
                 setnodeinfo({
-                    ...node,
+                    ...nodeinfo,
                     data:{
-                        ...node.data,
+                        ...nodeinfo.data,
                         [e.target.name]:e.target.value
                     }
                 })
@@ -59,7 +59,7 @@ const Apps = ( { service, setroutes } ) => {
     switch (service){
         case "Create":
 
-            endpoint = "https://private-aa280a-igsoftwaremoduloseguridad.apiary-mock.com/api/node/create";
+            endpoint = endpointpri+"/api/node/create";
             form =
                 <Fragment>
                     <form id="form" className='form' onSubmit={(e) => {sendPostReq(e, app, endpoint)}}>
@@ -93,11 +93,11 @@ const Apps = ( { service, setroutes } ) => {
                 </Fragment>
             break
         case "List":
-            var delete_endpoint = "https://private-aa280a-igsoftwaremoduloseguridad.apiary-mock.com/api/node/delete";
-            var list_endpoint = "https://private-aa280a-igsoftwaremoduloseguridad.apiary-mock.com/api/node/list";
+            var delete_endpoint = endpointpri+"/api/node/delete";
+            var list_endpoint = endpointpri+"/api/node/list";
             var list = JSON.parse(window.localStorage.getItem("data"));
-            arr_titles = Object.keys(list[0]);
             window.localStorage.setItem("listapps","false");
+            arr_titles = Object.keys(list[0]);
             arr_titles.forEach(e => {
                 titles.push(<h5 key = {`t${e}`}>{toUpperFirst(e)}</h5>);
             });
@@ -117,12 +117,17 @@ const Apps = ( { service, setroutes } ) => {
                             }}>
 
                         </i>
-                        {/* <i className='fas fa-info-circle'></i> */}
                         <i className='fas fa-pencil-alt'onClick = {(e) => {
-                                // sendPostReq(e, {nodeid: element["nodeid"]}, update_endpoint); 
-                                setnodeinfo({nodeid: element["nodeid"], data:{ name: element["name"], description: element["description"]}});
-                                setroutes({ route: "AppsUpdate", route_title: "Update app"});
-                            }}>
+                            // sendPostReq(e, {nodeid: element["nodeid"]}, update_endpoint); 
+                            setnodeinfo({nodeid: element["nodeid"], data:{ name: element["name"], description: element["description"]}});
+                            setroutes({ route: "AppsUpdate", route_title: "Update app"});
+                        }}>
+
+                        </i>
+                        <i className="fas fa-tools" onClick={ () => {
+                            setnode(element["nodeid"]);
+                            setroutes({ route: "Settings", route_title: "App Settings"}); 
+                        }}>
 
                         </i>
                     </div>
@@ -133,6 +138,13 @@ const Apps = ( { service, setroutes } ) => {
             form = 
                 <Fragment>
                     <div className = "table" id ="table">
+                        <div className = "table_header">
+                            <h4 className = "ttitle">Apps</h4>
+                            <i 
+                                class="fas fa-plus-circle" 
+                                onClick={ () => setroutes({ route:"AppsCreate", route_title: "Create App"})}
+                            ></i>
+                        </div>
                         <div className = "table_titles" id = "table_titles">
                             {titles}
                         </div>
@@ -150,11 +162,11 @@ const Apps = ( { service, setroutes } ) => {
 
             break
         case "Update":
-                const {name, description} = node.data;
-                endpoint = "https://private-aa280a-igsoftwaremoduloseguridad.apiary-mock.com/api/node/update";
+                const {name, description} = nodeinfo.data;
+                endpoint = endpointpri+"/api/node/update";
                 form =
                 <Fragment>
-                    <form id="form" className='form' onSubmit={(e) => {sendPostReq(e, node, endpoint)}}>
+                    <form id="form" className='form' onSubmit={(e) => {sendPostReq(e, nodeinfo, endpoint)}}>
                         <div className = "input-row">
                             <div className = "input-group">
                                 <label>Name</label>
@@ -181,7 +193,7 @@ const Apps = ( { service, setroutes } ) => {
                         
                         <Button 
                             text = { service }
-                            className= {showsubmitbutton(Object.values(node)) ? 'show': ''}
+                            className= {showsubmitbutton(Object.values(nodeinfo)) ? 'show': ''}
                         />
                     </form>
                 </Fragment> 

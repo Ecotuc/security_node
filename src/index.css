@@ -1,5 +1,6 @@
 :root {
     --dblue:  rgb(61, 61, 94);
+    --dblue-50:  rgba(39,39,66,1);
 }
 
 body{

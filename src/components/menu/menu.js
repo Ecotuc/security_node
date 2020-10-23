@@ -7,10 +7,18 @@ import './menu.scss';
 const Menu = ({routes, setroutes}) => {
 
     const handleCollapse = e =>{
-        if(!e.target.nextElementSibling.classList.contains('show')){
-            e.target.nextElementSibling.classList.add('show');
+        var element = null;
+        if(e.target.tagName === "svg"){
+            element = e.target.parentElement.nextElementSibling;
+        }else if(e.target.tagName === "path"){
+            element = e.target.parentElement.parentElement.nextElementSibling;
         }else{
-            e.target.nextElementSibling.classList.remove('show');
+            element = e.target.nextElementSibling
+        }
+        if(!element.classList.contains('show')){
+            element.classList.add('show');
+        }else{
+            element.classList.remove('show');
         }
     }
 
@@ -19,10 +27,10 @@ const Menu = ({routes, setroutes}) => {
             <div className = "side_nav">
                 <ul className="primary_li">
                 <li>
-                    <h3 onClick={ handleCollapse } >Apps <FontAwesomeIcon icon={faAngleRight}/></h3> 
+                    <h3 onClick={ () => setroutes({ route: "AppsList", route_title: "List apps"}) } >Apps </h3> 
                     <ul className="second_li">
-                        <li onClick={ () => setroutes({ route: "AppsCreate", route_title: "Create app"}) }><h4>Create</h4></li>
-                        <li onClick={ () => setroutes({ route: "AppsList", route_title: "List apps"}) }><h4>List</h4></li>
+                        {/* <li onClick={ () => setroutes({ route: "AppsCreate", route_title: "Create app"}) }><h4>Create</h4></li> */}
+                        {/* <li onClick={ }><h4>List</h4></li> */}
                         {/* <li onClick={ () => setroutes({ route: "AppsDetails", route_title: "App details"}) }><h4>Details</h4></li>
                         <li onClick={ () => setroutes({ route: "AppsDelete", route_title: "Delete app"}) }><h4>Delete</h4></li>
                         <li onClick={ () => setroutes({ route: "AppsUpdate", route_title: "Update app"}) }><h4>Update</h4></li> */}
@@ -31,8 +39,8 @@ const Menu = ({routes, setroutes}) => {
                 <li>
                     <h3 onClick={ handleCollapse } >Groups <FontAwesomeIcon icon={faAngleRight}/></h3> 
                     <ul className="second_li">
-                        <li onClick={ () => setroutes({ route: "GroupsCreate", route_title: "Create group"}) }><h4>Create</h4></li>
-                        <li onClick={ () => setroutes({ route: "GroupsList", route_title: "List groups"}) }><h4>List</h4></li>
+                        {/* <li onClick={ () => setroutes({ route: "GroupsCreate", route_title: "Create group"}) }><h4>Create</h4></li> */}
+                        {/* <li onClick={ () => setroutes({ route: "GroupsList", route_title: "List groups"}) }><h4>List</h4></li> */}
                         <li onClick={ () => setroutes({ route: "GroupsDetails", route_title: "Group details"}) }><h4>Details</h4></li>
                         <li onClick={ () => setroutes({ route: "GroupsDelete", route_title: "Delete group"}) }><h4>Delete</h4></li>
                         <li onClick={ () => setroutes({ route: "GroupsUpdate", route_title: "Update group"}) }><h4>Update</h4></li>
@@ -44,8 +52,8 @@ const Menu = ({routes, setroutes}) => {
                 <li>
                     <h3 onClick={ handleCollapse } >Roles <FontAwesomeIcon icon={faAngleRight}/></h3> 
                     <ul className="second_li">
-                        <li onClick={ () => setroutes({ route: "RolesCreate", route_title: "Create role"}) }><h4>Create</h4></li>
-                        <li onClick={ () => setroutes({ route: "RolesList", route_title: "List roles"}) }><h4>List</h4></li>
+                        {/* <li onClick={ () => setroutes({ route: "RolesCreate", route_title: "Create role"}) }><h4>Create</h4></li> */}
+                        {/* <li onClick={ () => setroutes({ route: "RolesList", route_title: "List roles"}) }><h4>List</h4></li> */}
                         <li onClick={ () => setroutes({ route: "RolesDetails", route_title: "Role details"}) }><h4>Details</h4></li>
                         <li onClick={ () => setroutes({ route: "RolesDelete", route_title: "Delete role"}) }><h4>Delete</h4></li>
                         <li onClick={ () => setroutes({ route: "RolesAddRole", route_title: "Add role to group"}) }><h4>Add role to group</h4></li>
@@ -61,8 +69,8 @@ const Menu = ({routes, setroutes}) => {
                 <li>
                     <h3 onClick={ handleCollapse } > Permissions <FontAwesomeIcon icon={faAngleRight}/></h3> 
                     <ul className="second_li">
-                        <li onClick={ () => setroutes({ route: "PermissionsCreate", route_title: "Create permission"}) }><h4>Create</h4></li>
-                        <li onClick={ () => setroutes({ route: "PermissionsList", route_title: "List permissions"}) }><h4>List</h4></li>
+                        {/* <li onClick={ () => setroutes({ route: "PermissionsCreate", route_title: "Create permission"}) }><h4>Create</h4></li> */}
+                        {/* <li onClick={ () => setroutes({ route: "PermissionsList", route_title: "List permissions"}) }><h4>List</h4></li> */}
                         <li onClick={ () => setroutes({ route: "PermissionsDetails", route_title: "permission details"}) }><h4>Details</h4></li>
                         <li onClick={ () => setroutes({ route: "PermissionsDelete", route_title: "Delete permission"}) }><h4>Delete</h4></li>
                         <li onClick={ () => setroutes({ route: "PermissionsUpdate", route_title: "Update permission"}) }><h4>Update</h4></li>

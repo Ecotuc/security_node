@@ -1,13 +1,14 @@
 .button{
     border: none;
-    color: white;
+    color: var(--dblue-50);
     font-size: 16px;
     transition: 0.5s ease;
     visibility: hidden;
     opacity: 0;
     &:hover{
-        background: white;
-        color: rgb(61, 61, 94);
+        background: var(--dblue);
+            background: linear-gradient(135deg, var(--dblue) 0%,var(--dblue-50) 50%, var(--dblue) 100%);
+            color: white;
     }
     &.show{
         visibility: visible;

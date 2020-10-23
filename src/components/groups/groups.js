@@ -8,6 +8,7 @@ import { sendPostReq } from '../../util/send_req';
 const Groups = ( { service } ) => {
     // var parse = require('html-react-parser');
     // parse(form)
+    const endpointpri = window.localStorage.getItem("endpointpri");
     var form = null;
     var endpoint = "";
     var arrayOfOptionValues = null;
@@ -50,7 +51,7 @@ const Groups = ( { service } ) => {
 
     switch (service){
         case "Create":
-            endpoint = "https://private-aa280a-igsoftwaremoduloseguridad.apiary-mock.com/api/node/rights/group/create";
+            endpoint = endpointpri+"/api/node/rights/group/create";
             form =
                 <Fragment>
                     <form id = "form" className='form' onSubmit={(e) => {sendPostReq(e, group, endpoint)}}>

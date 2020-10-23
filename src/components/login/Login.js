@@ -7,6 +7,7 @@ import { showsubmitbutton } from '../../util/show_submit_button';
 
 const Login = ({logininfo, setlogininfo}) => {
 
+    const enpointpri = window.localStorage.getItem("endpointpri");
     
 
     const handleChange = e =>{
@@ -26,18 +27,20 @@ const Login = ({logininfo, setlogininfo}) => {
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify(logininfo)
         };
-        const answer = await fetch('https://private-5bf7ee-igsoftwaremoduloseguridad.apiary-mock.com/api/node/user/auth', requestOptions)
+        const answer = await fetch(enpointpri+'/api/node/user/auth', requestOptions)
             .then(response => {
                 return response.json();
             });
             alert(answer.message);
             if(answer.success){
+                document.getElementById("content").classList.remove("login");
                 setlogininfo({
                     ...logininfo,
                     token: answer.data.token,
                     success: answer.success
                 });
                 window.localStorage.setItem("token", answer.data.token);
+                // window.localStorage.setItem("uid", answer.data.);
             }
     }
 

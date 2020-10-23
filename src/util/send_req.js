@@ -6,8 +6,8 @@ import { sendGetReq } from '../components/form/form';
 export const sendPostReq = async (e, req, endpoint, endpoint2) => {
     // console.log(app.json());
     e.preventDefault();
-    debugger
     if( showsubmitbutton(Object.values(req))){
+        // if
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': window.localStorage.getItem("token")},
@@ -22,7 +22,6 @@ export const sendPostReq = async (e, req, endpoint, endpoint2) => {
                 if(endpoint2){
                     sendGetReq(endpoint2, "table_titles", "table_rows", "table");
                 }
-                debugger
             }
     }else{
         alert('All the fields must be filled');
@@ -74,33 +73,3 @@ export const sendPostReq = async (e, req, endpoint, endpoint2) => {
 //   }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // // console.log(app.json());
-    // // debugger
-
-    // // const api = await fetch()
-
-
-    // const api = await fetch('https://private-aa280a-igsoftwaremoduloseguridad.apiary-mock.com/api/node/list')
-    // const list = await api.json();
-    //     console.log(list);
-    //     // alert(answer.message);
-    //     // if(answer.success){
-    //     //     debugger
-    //     // }
-
-// }

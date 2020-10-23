@@ -8,6 +8,7 @@ import { sendPostReq } from '../../util/send_req';
 const Permissions = ( { service } ) => {
     // var parse = require('html-react-parser');
     // parse(form)
+    const endpointpri = window.localStorage.getItem("endpointpri");
     var form = null;
     var endpoint = "";
     var arrayOfOptionValues = null;
@@ -49,7 +50,7 @@ const Permissions = ( { service } ) => {
 
     switch (service){
         case "Create":
-            endpoint = "https://private-aa280a-igsoftwaremoduloseguridad.apiary-mock.com/api/node/rights/permission/create";
+            endpoint = endpointpri+"/api/node/rights/permission/create";
             form =
                 <Fragment>
                     <form id = "form" className='form' onSubmit={(e) => {sendPostReq(e, permission, endpoint)}}>

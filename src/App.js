@@ -7,7 +7,6 @@ import Login from './components/login/login';
 import Menu from './components/menu/menu';
 
 function App() {
-  
   const [logininfo, setlogininfo] = useState({
     username: '',
     password: '',
@@ -23,6 +22,14 @@ function App() {
       route: "/"
     });
   }
+
+  // var enpoint = "http://2a1ce45d1288.ngrok.io";
+  // window.localStorage.setItem("endpointpri","http://2a1ce45d1288.ngrok.io");
+  window.localStorage.setItem("endpointpri","https://private-aa280a-igsoftwaremoduloseguridad.apiary-mock.com");
+
+
+
+
 
   const { route, route_title } = routes;
   const { token } = logininfo;
@@ -49,24 +56,45 @@ function App() {
     </Fragment>;
   }
 
-  // if(token === "" || token === null || token === undefined)
-  if(token === "") /* TODO */  // Temp para saltar login
+  var content = null;
+  if(token === "" || token === null || token === undefined)
+  // if(token === "") /* TODO */  // Temp para saltar login
   {
     actual =  
       <Login 
         logininfo ={logininfo} 
         setlogininfo = {setlogininfo}
       />;
+    content = 
+    <Fragment>
+      { title }
+      <div className = "content login" id = "content">
+        { actual }
+      </div>
+    </Fragment>;
+
     
   }else{
     actual = 
-    <Fragment>
-      <Form
-        routes = { routes }
-        setroutes = { setroutes }
-      />
+      <Fragment>
+        <Form
+          routes = { routes }
+          setroutes = { setroutes }
+          />
 
-    </Fragment>;
+      </Fragment>;
+    content = 
+      <Fragment>
+        { title }
+        <Menu 
+          route = { route }
+          setroutes = { setroutes }
+        />
+        <div className = "content" id = "content">
+          { actual }
+        </div>
+      </Fragment>;
+    
     setTimeout(() => {
       if(route_title !== "" && document.getElementById("form")){
         document.getElementById("form").classList.add("show");
@@ -80,16 +108,9 @@ function App() {
 
   return(
     <Fragment>
-      { title }
-      <Menu 
-        route = { route }
-        setroutes = { setroutes }
-      />
-      <div className = "content">
-        { actual }
-      </div>
+      {content}
     </Fragment>
-  )
+    )
 }
 
 export default App;
