@@ -23,11 +23,21 @@ function App() {
     });
   }
 
+  const goOut = () => {
+    window.localStorage.removeItem("token");
+    setlogininfo({
+      token:"",
+      username: '',
+      password: '',
+    })
+    goHome()
+  }
+
   // var enpoint = "http://2a1ce45d1288.ngrok.io";
-  // window.localStorage.setItem("endpointpri","http://2a1ce45d1288.ngrok.io");
-  window.localStorage.setItem("endpointpri","https://private-aa280a-igsoftwaremoduloseguridad.apiary-mock.com");
+  window.localStorage.setItem("endpointpri","http://ec2-3-136-116-249.us-east-2.compute.amazonaws.com");
+  // window.localStorage.setItem("endpointpri","https://private-aa280a-igsoftwaremoduloseguridad.apiary-mock.com");
 
-
+  // "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-gpu --user-data-dir=~/chromeTemp
 
 
 
@@ -45,6 +55,9 @@ function App() {
           <FontAwesomeIcon onClick={goHome} icon={faHome}/>
         </div>
         <h1 className="title">Security node</h1>
+        <div className = "goOut">
+          <i className = "fas fa-sign-out-alt" onClick={goOut}></i>
+        </div>
       </div>
     </Fragment>;
   }else{
@@ -64,6 +77,7 @@ function App() {
       <Login 
         logininfo ={logininfo} 
         setlogininfo = {setlogininfo}
+        setroutes = {setroutes}
       />;
     content = 
     <Fragment>

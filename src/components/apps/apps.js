@@ -4,9 +4,12 @@ import Button from '../button/button';
 import { showsubmitbutton } from '../../util/show_submit_button';
 import { sendPostReq } from '../../util/send_req';
 import { toUpperFirst } from '../../util/to_uppercase_first';
+import { sleep } from '../../util/sleep';
 import './apps.scss';
 
 const Apps = ( { service, setroutes, setnode } ) => {
+
+    
   
     const endpointpri = window.localStorage.getItem("endpointpri");
     // var parse = require('html-react-parser');
@@ -54,7 +57,28 @@ const Apps = ( { service, setroutes, setnode } ) => {
         
     }
 
-    
+    const sendGetReq = async (endpoint, ansname, node) => {
+            
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': window.localStorage.getItem("token")},
+            body: JSON.stringify({nodeid:node})
+        };
+        await fetch(endpoint, requestOptions)
+        const answer = await fetch(endpoint, requestOptions)
+            .then(response => {
+                return response.json();
+            });
+            if(!answer.message.includes("Listado")){
+                alert(answer.message);
+            }
+            if(answer.success){
+                // debugger
+                window.localStorage.setItem(ansname, JSON.stringify(answer.data));
+                
+            }
+        
+}    
 
     switch (service){
         case "Create":
@@ -62,7 +86,7 @@ const Apps = ( { service, setroutes, setnode } ) => {
             endpoint = endpointpri+"/api/node/create";
             form =
                 <Fragment>
-                    <form id="form" className='form' onSubmit={(e) => {sendPostReq(e, app, endpoint)}}>
+                    <form id="form" className='form' onSubmit={(e) => {sendPostReq(e, app, endpoint);setroutes({ route: "AppsList", route_title: "List Apps"})}}>
                         <div className = "input-row">
                             <div className = "input-group">
                                 <label>Name</label>
@@ -113,20 +137,25 @@ const Apps = ( { service, setroutes, setnode } ) => {
                         <i className='fas fa-trash-alt' 
                             onClick = {(e) => {
                                 sendPostReq(e, {nodeid: element["nodeid"]}, delete_endpoint, list_endpoint); 
-                                setroutes({ route: "AppsList", route_title: "List apps"});
+                                setroutes({ route: "AppsList", route_title: "List Apps"});
                             }}>
 
                         </i>
                         <i className='fas fa-pencil-alt'onClick = {(e) => {
                             // sendPostReq(e, {nodeid: element["nodeid"]}, update_endpoint); 
-                            setnodeinfo({nodeid: element["nodeid"], data:{ name: element["name"], description: element["description"]}});
+                            setnodeinfo({data:{nodeid: element["nodeid"],  name: element["name"], description: element["description"]}});
                             setroutes({ route: "AppsUpdate", route_title: "Update app"});
                         }}>
 
                         </i>
                         <i className="fas fa-tools" onClick={ () => {
+                            
                             setnode(element["nodeid"]);
-                            setroutes({ route: "Settings", route_title: "App Settings"}); 
+                            sendGetReq(endpointpri+"/api/node/rights/group/list", "groupsdata", element["nodeid"]);
+                            sendGetReq(endpointpri+"/api/node/rights/role/list", "rolesdata", element["nodeid"]);
+                            sendGetReq(endpointpri+"/api/node/rights/permission/list", "permissionsdata", element["nodeid"]);
+                            // sleep(5000);
+                            setroutes({ route: "Settings", route_title: "App Settings"});
                         }}>
 
                         </i>
@@ -140,10 +169,16 @@ const Apps = ( { service, setroutes, setnode } ) => {
                     <div className = "table" id ="table">
                         <div className = "table_header">
                             <h4 className = "ttitle">Apps</h4>
-                            <i 
-                                class="fas fa-plus-circle" 
-                                onClick={ () => setroutes({ route:"AppsCreate", route_title: "Create App"})}
-                            ></i>
+                            <div className = "tabactions">
+                                <i 
+                                    className="fas fa-sync"
+                                    onClick={ () => setroutes({ route: "AppsList", route_title: "List Apps"})}
+                                ></i>
+                                <i 
+                                    className="fas fa-plus-circle" 
+                                    onClick={ () => setroutes({ route:"AppsCreate", route_title: "Create App"})}
+                                ></i>
+                            </div>
                         </div>
                         <div className = "table_titles" id = "table_titles">
                             {titles}
@@ -166,7 +201,7 @@ const Apps = ( { service, setroutes, setnode } ) => {
                 endpoint = endpointpri+"/api/node/update";
                 form =
                 <Fragment>
-                    <form id="form" className='form' onSubmit={(e) => {sendPostReq(e, nodeinfo, endpoint)}}>
+                    <form id="form" className='form' onSubmit={(e) => {sendPostReq(e, nodeinfo, endpoint);setroutes({ route: "AppsList", route_title: "List Apps"})}}>
                         <div className = "input-row">
                             <div className = "input-group">
                                 <label>Name</label>

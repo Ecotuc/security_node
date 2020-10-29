@@ -4,6 +4,7 @@ import Groups from '../groups/groups';
 import Permissions from '../permissions/permissions';
 import Roles from '../roles/roles';
 import Settings from '../settings/settings';
+import Users from '../users/users';
 
 import './form.scss';
 
@@ -19,6 +20,7 @@ export const sendGetReq = async (endpoint, ttitles, trows, table) => {
          return response.json();
         });
         if(answer.success && window.localStorage.getItem("pass") === "true"){
+            // debugger
             window.localStorage.setItem("data", JSON.stringify(answer.data));
             // arr_titles = Object.keys(answer.data[0]);
             // arr_data = answer.data;
@@ -32,9 +34,30 @@ const Form = ({routes, setroutes}) => {
     sendGetReq(endpointpri+"/api/node/list", "table_titles", "table_rows", "table");
 
     const [node, setnode] = useState("");
-    const [group, setgroup] = useState({})
-    const [role, setrole] = useState({})
-    const [permission, setpermission] = useState({})
+    const [group, setgroup] = useState({
+        name:'',
+        description:'',
+        roles:[],
+        nodeid: ''
+    })
+    const [role, setrole] = useState({
+        name:'',
+        description:'',
+        nodeid:''
+    })
+    const [permission, setpermission] = useState({
+        nodeid: '',
+        permissiondata: '',
+        description: ''
+    })
+    const [user, setuser] = useState({
+        nodeid: '',
+        groupid: '',
+        username: '',
+        email: '',
+        fullname: '',
+        password: ''
+    })
 
 
     
@@ -60,6 +83,10 @@ const Form = ({routes, setroutes}) => {
             form =
                 <Groups 
                     service = { route }
+                    node = { node }
+                    group = { group }
+                    setgroup = { setgroup }
+                    setroutes = { setroutes }
                 />;
             console.log("Groups");
         }else if(route.includes("Roles")){
@@ -67,18 +94,35 @@ const Form = ({routes, setroutes}) => {
             form =
                 <Roles
                     service = { route }
+                    node = { node }
+                    role = { role }
+                    setrole = { setrole }
+                    setroutes = { setroutes }
                 />;
             console.log("Roles");
         }else if(route.includes("Permissions")){
             route = route.substr(route.indexOf("Permissions") + 11,route.length);
             form =
                 <Permissions
-                    service = { route }
+                service = { route }
+                node = { node }
+                permission = { permission }
+                setpermission = { setpermission }
+                setroutes = { setroutes }
                 />;                
             console.log("Permissions");
         }else if(route.includes("Users")){
             route = route.substr(route.indexOf("Users") + 5,route.length);
             console.log("Users");
+            form = 
+                <Users
+                service = { route }
+                node = { node }
+                user = { user }
+                setuser = { setuser }
+                setroutes = { setroutes }
+                group = { group }
+                />
         }else if(route.includes("Settings")){
             route = route.substr(route.indexOf("Settings") + 8,route.length);
             console.log("Settings");

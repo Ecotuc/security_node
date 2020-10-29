@@ -5,9 +5,9 @@ import Button from '../button/button';
 import './login.scss';
 import { showsubmitbutton } from '../../util/show_submit_button';
 
-const Login = ({logininfo, setlogininfo}) => {
+const Login = ({logininfo, setlogininfo, setroutes}) => {
 
-    const enpointpri = window.localStorage.getItem("endpointpri");
+    const endpointpri = window.localStorage.getItem("endpointpri");
     
 
     const handleChange = e =>{
@@ -22,12 +22,13 @@ const Login = ({logininfo, setlogininfo}) => {
 
     const loginattempt = async e => {
         e.preventDefault();
+        // debugger
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify(logininfo)
         };
-        const answer = await fetch(enpointpri+'/api/node/user/auth', requestOptions)
+        const answer = await fetch(endpointpri+'/api/node/user/auth', requestOptions)
             .then(response => {
                 return response.json();
             });
@@ -40,6 +41,7 @@ const Login = ({logininfo, setlogininfo}) => {
                     success: answer.success
                 });
                 window.localStorage.setItem("token", answer.data.token);
+                setroutes({ route: "AppsList", route_title: "List Apps"})
                 // window.localStorage.setItem("uid", answer.data.);
             }
     }

@@ -1,71 +1,73 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
 
 import Button from '../button/button';
 import { showsubmitbutton } from '../../util/show_submit_button';
 import { sendPostReq } from '../../util/send_req';
+import Table from '../table/table';
+import { sleep } from '../../util/sleep';
 
 
-const Roles = ( { service } ) => {
+const Roles = ( { service, node, role, setrole, setroutes } ) => {
     // var parse = require('html-react-parser');
     // parse(form)
     const endpointpri = window.localStorage.getItem("endpointpri");
     var form = null;
+    var users = null;
+    var allusers = [];
     var endpoint = "";
-    var arrayOfOptionValues = null;
+    var aux = [];
 
-    const [role, setroleinfo] = useState({
-        name:'',
-        description:'',
-        nodeid: ''
-    });
+    setTimeout(() => {
+        console.log('exe');
+        if (parseInt(window.localStorage.getItem("timesexecuted")) === 0){
+            setroutes({ route: "RolesSettings", route_title: "Role Settings" });
+            window.localStorage.setItem("timesexecuted", "1");
+        }
+    }, 2000);
+
+    const sendGetReq = async (endpoint, ansname, body) => {
+            
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': window.localStorage.getItem("token")},
+            body: JSON.stringify(body)
+        };
+        await fetch(endpoint, requestOptions)
+        const answer = await fetch(endpoint, requestOptions)
+            .then(response => {
+                return response.json();
+            });
+            if(!answer.message.includes("Listado")){
+                alert(answer.message);
+            }
+            if(answer.success){
+                // debugger
+                window.localStorage.setItem(ansname, JSON.stringify(answer.data));
+                
+            }
+        
+    }
+    sendGetReq(endpointpri+"/api/node/user/list", "users",{});
+    sleep(500);
+
 
     const handleChange = e => {
-        // debugger
-        var value = "";
-        if (e.target.type.includes('select-multiple')){
-            arrayOfOptionValues = [];
-            for (var i = 0; i < e.target.selectedOptions.length; i++){
-                arrayOfOptionValues.push(e.target.selectedOptions[i].attributes.value.value);
-            }
-            value = arrayOfOptionValues;
-        }else{ value = e.target.value }
-        setroleinfo({
+        setrole({
             ...role,
-            [e.target.name]: value,
+            nodeid:node,
+            [e.target.name]: e.target.value,
         })
     }
     
-    const { name, description, nodeid } = role;
-
-    // var roles = {
-    //     "name": "rolename",
-    //     "description": "Grupo de usuarios que se utilizan en el nodo.",
-    //     "roles": [
-    //       "id1",
-    //       "id2"
-    //     ],
-    //     "nodeid": "123"
-    //   };
-    
+    const { name, description } = role;
 
     switch (service){
         case "Create":
             endpoint = endpointpri+"/api/node/rights/role/create";
             form =
                 <Fragment>
-                    <form id = "form" className='form' onSubmit={(e) => {sendPostReq(e, role, endpoint)}}>
+                    <form id = "form" className='form' onSubmit={(e) => {sendPostReq(e, role, endpoint);setroutes({ route: "SettingsList", route_title: "App Settings"})}}>
                     <div className = "input-row">
-                        <div className = "input-group">
-                            <label>Node ID</label>
-                            <input
-                                type = "text"
-                                name = "nodeid"
-                                className = "u-full-width"
-                                onChange = { handleChange }
-                                placeholder = "232400"
-                                value = { nodeid }
-                            />
-                        </div>
                         <div className = "input-group">
                             <label>Name</label>
                             <input
@@ -74,11 +76,9 @@ const Roles = ( { service } ) => {
                                 className = "u-full-width"
                                 onChange = { handleChange }
                                 placeholder = "role name"
-                                value = { name }
+                                // value = { name }
                             />
                         </div>
-                    </div>
-                    <div className = "input-row">
                         <div className = "input-group">
                             <label>Description</label>
                             <textarea
@@ -86,7 +86,7 @@ const Roles = ( { service } ) => {
                                 name = "description"
                                 className = "u-full-width"
                                 onChange = { handleChange }
-                                value = { description }
+                                // value = { description }
                                 ></textarea>
                         </div>
                     </div>
@@ -96,9 +96,56 @@ const Roles = ( { service } ) => {
                             className= {showsubmitbutton(Object.values(role)) ? 'show': ''}
                         />
                     </form>
-                </Fragment>
+                </Fragment>;
             break
-        default :
+        case "Settings":
+            sleep(500);
+            users = JSON.parse(window.localStorage.getItem("usersfromrl"));
+            aux = JSON.parse(window.localStorage.getItem("users"))
+            if (users.length > 0 && aux.length !== users.length){
+                aux.forEach(user => {
+                    users.forEach(roleuser => {
+                        if(user.userid !== roleuser.id){
+                            allusers.push(user);
+                        } 
+                    });
+                });
+                window.localStorage.setItem("users", JSON.stringify(allusers));
+            }else if(aux.length === users.length){
+                window.localStorage.setItem("users",JSON.stringify(allusers));
+            }
+
+
+            form =
+                <Fragment>
+                    <Table
+                        data = "usersfromrl"
+                        node = { node }
+                        setroutes = { setroutes }
+                        // func = { setgroup }
+                        refresh = "RolesSettings"
+                        refreshname = "Role Settings"
+                        ttitle = "Users from role"
+                        ttitles = {["username"]}
+                        extradata ={window.localStorage.getItem("roleid")}
+                    />
+                    <Table
+                        data = "users"
+                        node = { node }
+                        setroutes = { setroutes }
+                        // func = { setgroup }
+                        refresh = "RolesSettings"
+                        refreshname = "Role Settings"
+                        ttitle = "Users availables"
+                        ttitles = {["username", "email", "fullname"]}
+                        extradata ={window.localStorage.getItem("roleid")}
+                    />
+
+                </Fragment>
+            ;
+
+            break
+            default :
             service = 1;
             break
     }

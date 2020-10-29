@@ -96,8 +96,13 @@ input, select, textarea{
         justify-content: space-between;
         align-items: center;
         font-size: 24px;
-        i{
-            cursor: pointer;
+        .tabactions{
+            width: 75px;
+            display: flex;
+            justify-content: space-between;
+            i{
+                cursor: pointer;
+            }
         }
     }
     .ttitle{
