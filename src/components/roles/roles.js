@@ -101,7 +101,7 @@ const Roles = ( { service, node, role, setrole, setroutes } ) => {
         case "Settings":
             sleep(500);
             users = JSON.parse(window.localStorage.getItem("usersfromrl"));
-            aux = JSON.parse(window.localStorage.getItem("users"))
+            aux = JSON.parse(window.localStorage.getItem("users"));
             if (users.length > 0 && aux.length !== users.length){
                 aux.forEach(user => {
                     users.forEach(roleuser => {
@@ -128,6 +128,7 @@ const Roles = ( { service, node, role, setrole, setroutes } ) => {
                         ttitle = "Users from role"
                         ttitles = {["username"]}
                         extradata ={window.localStorage.getItem("roleid")}
+                        secndtaboption = {false}
                     />
                     <Table
                         data = "users"
@@ -139,6 +140,7 @@ const Roles = ( { service, node, role, setrole, setroutes } ) => {
                         ttitle = "Users availables"
                         ttitles = {["username", "email", "fullname"]}
                         extradata ={window.localStorage.getItem("roleid")}
+                        secndtaboption = {false}
                     />
 
                 </Fragment>

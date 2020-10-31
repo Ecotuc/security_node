@@ -39,25 +39,23 @@ const Form = ({routes, setroutes}) => {
         description:'',
         roles:[],
         nodeid: ''
-    })
+    });
     const [role, setrole] = useState({
         name:'',
         description:'',
         nodeid:''
-    })
+    });
     const [permission, setpermission] = useState({
         nodeid: '',
         permissiondata: '',
         description: ''
-    })
+    });
     const [user, setuser] = useState({
-        nodeid: '',
-        groupid: '',
         username: '',
         email: '',
         fullname: '',
         password: ''
-    })
+    });
 
 
     

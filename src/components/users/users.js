@@ -4,6 +4,9 @@ import Button from '../button/button';
 import { showsubmitbutton } from '../../util/show_submit_button';
 import { sendPostReq } from '../../util/send_req';
 import Table from '../table/table';
+import { sleep } from '../../util/sleep';
+
+import './users.scss';
 
 
 const Users = ( { service, node, user, setuser, setroutes, group } ) => {
@@ -16,7 +19,14 @@ const Users = ( { service, node, user, setuser, setroutes, group } ) => {
     const endpointpri = window.localStorage.getItem("endpointpri");
     var form = null;
     var endpoint = "";
-    var arrayOfOptionValues = null;
+    var permissions = null;
+    var users = null;
+    var allpermissions = [];
+    var usersdata = "";
+    var aux = [];
+
+
+
 // const { name, description, roles,} = group;
     const sendGetReq = async (endpoint, ansname, body) => {
             
@@ -42,29 +52,19 @@ const Users = ( { service, node, user, setuser, setroutes, group } ) => {
 
     const handleChange = e => {
         // debugger
-        var value = "";
-        if (e.target.type.includes('select-multiple')){
-            arrayOfOptionValues = [];
-            for (var i = 0; i < e.target.selectedOptions.length; i++){
-                arrayOfOptionValues.push(e.target.selectedOptions[i].attributes.value.value);
-            }
-            value = arrayOfOptionValues;
-        }else{ value = e.target.value }
         setuser({
             ...user,
-            nodeid:node,
-            [e.target.name]: value,
+            [e.target.name]: e.target.value
         })
     }
     
-    const { description, roles,} = user;
+    const { username } = user;
 
     switch (service){
         case "List":
             endpoint = endpointpri+"/api/node/rights/group/listuser";
-            setTimeout(() => {
-                sendGetReq(endpoint, "usersdata", {nodeid: node, data:{groupid: group.groupid}});
-            }, 1000);
+            usersdata = JSON.parse(window.localStorage.getItem("users"));
+            
             // debugger
             form = 
                 <Fragment>
@@ -76,8 +76,9 @@ const Users = ( { service, node, user, setuser, setroutes, group } ) => {
                         refresh = "UsersList"
                         refreshname = "List Users"
                         ttitle = "Users"
+                        ttitles = {["username", "email", "fullname"]}
                     />
-                    <Table
+                    {/* <Table
                         data = "superusersdata"
                         node = { node }
                         setroutes = { setroutes }
@@ -85,7 +86,7 @@ const Users = ( { service, node, user, setuser, setroutes, group } ) => {
                         refresh = "UsersList"
                         refreshname = "List Users"
                         ttitle = "Users"
-                    />
+                    /> */}
 
                 </Fragment>
             ;
@@ -105,39 +106,54 @@ const Users = ( { service, node, user, setuser, setroutes, group } ) => {
                     <form id = "form" className='form' onSubmit={(e) => {
                         sendPostReq(e, user, endpoint);
                         setTimeout(() => {
-                            setroutes({ route: "SettingsList", route_title: "App Settings"})
+                            setroutes({ route: "UserList", route_title: "Users"})
                         }, 500);
                         }}>
                     <div className = "input-row">
                         <div className = "input-user">
-                            <label>Name</label>
+                            <label>Username</label>
                             <input
                                 type = "text"
-                                name = "name"
+                                name = "username"
                                 className = "u-full-width"
                                 onChange = { handleChange }
-                                placeholder = "User name"
+                                placeholder = "user01"
                                 // value = { name }
                             />
                         </div>
                         <div className = "input-user">
-                            <label>Roles</label>
-                            <select name = "roles" multiple={true} value = { roles } onChange={handleChange}>
-                                {checkboxes}
-                            </select>
+                            <label>Full Name</label>
+                            <input
+                                type = "text"
+                                name = "fullname"
+                                className = "u-full-width"
+                                onChange = { handleChange }
+                                placeholder = "Juan Benito Perez Fieldman"
+                                // value = { name }
+                            />
                         </div>
                     </div>
                     <div className = "input-row">
-                        
                         <div className = "input-user">
-                            <label>Description</label>
-                            <textarea
-                                type = "text"
-                                name = "description"
+                            <label>Email</label>
+                            <input
+                                type = "email"
+                                name = "email"
                                 className = "u-full-width"
                                 onChange = { handleChange }
-                                value = { description }
-                                ></textarea>
+                                placeholder = "example@domain.com"
+                                // value = { name }
+                            />
+                        </div>
+                        <div className = "input-user">
+                            <label>Password</label>
+                            <input
+                                type = "password"
+                                name = "password"
+                                className = "u-full-width"
+                                onChange = { handleChange }
+                                // value = { name }
+                            />
                         </div>
                     </div>
                     
@@ -150,6 +166,55 @@ const Users = ( { service, node, user, setuser, setroutes, group } ) => {
             break
         case "Update":
             // debugger
+            break
+        case "Settings":
+            sleep(500);
+            permissions = JSON.parse(window.localStorage.getItem("prmsfromusr"));
+            aux = JSON.parse(window.localStorage.getItem("permissions"));
+            if (permissions.length > 0 && aux.length !== permissions.length){
+                aux.forEach(pemission => {
+                    permissions.forEach(peruser => {
+                        if(pemission.userid !== peruser.id){
+                            allpermissions.push(pemission);
+                        } 
+                    });
+                });
+                window.localStorage.setItem("permissions", JSON.stringify(allpermissions));
+            }else if(aux.length === permissions.length){
+                window.localStorage.setItem("permissions",JSON.stringify(allpermissions));
+            }
+
+
+            form =
+                <Fragment>
+                    <Table
+                        data = "prmsfromusr"
+                        node = { node }
+                        setroutes = { setroutes }
+                        func = { setuser }
+                        refresh = "UsersSettings"
+                        refreshname = {`${username} Settings`}
+                        ttitle = "Permissions From User"
+                        ttitles = {["permissiondata", "description"]}
+                        secndtaboption = {false}
+                    />
+                    <Table
+                        data = "permissions"
+                        node = { node }
+                        setroutes = { setroutes }
+                        func = { setuser }
+                        refresh = "UsersSettings"
+                        refreshname = {`${username} Settings`}
+                        ttitle = "Permissions Availables"
+                        ttitles = {["permissiondata", "description"]}
+                        secndtaboption = {false}
+                        extradata = {window.localStorage.getItem("userid")}
+                        // extradata ={window.localStorage.getItem("roleid")}
+                    />
+
+                </Fragment>
+            ;
+
             break
         default :
             service = 1;

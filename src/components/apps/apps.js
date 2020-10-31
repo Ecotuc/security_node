@@ -4,7 +4,7 @@ import Button from '../button/button';
 import { showsubmitbutton } from '../../util/show_submit_button';
 import { sendPostReq } from '../../util/send_req';
 import { toUpperFirst } from '../../util/to_uppercase_first';
-import { sleep } from '../../util/sleep';
+// import { sleep } from '../../util/sleep';
 import './apps.scss';
 
 const Apps = ( { service, setroutes, setnode } ) => {
@@ -76,6 +76,10 @@ const Apps = ( { service, setroutes, setnode } ) => {
                 // debugger
                 window.localStorage.setItem(ansname, JSON.stringify(answer.data));
                 
+            }else{
+                if (endpoint.includes("node/rights/group/list")){
+                    window.localStorage.setItem(ansname, JSON.stringify([]));
+                }
             }
         
 }    
@@ -151,6 +155,7 @@ const Apps = ( { service, setroutes, setnode } ) => {
                         <i className="fas fa-tools" onClick={ () => {
                             
                             setnode(element["nodeid"]);
+                            window.localStorage.setItem("nodeid",element["nodeid"]);
                             sendGetReq(endpointpri+"/api/node/rights/group/list", "groupsdata", element["nodeid"]);
                             sendGetReq(endpointpri+"/api/node/rights/role/list", "rolesdata", element["nodeid"]);
                             sendGetReq(endpointpri+"/api/node/rights/permission/list", "permissionsdata", element["nodeid"]);

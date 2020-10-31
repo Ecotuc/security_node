@@ -73,7 +73,7 @@ input, select, textarea{
     color: white;
     border: none !important; 
     // border-bottom: 1px solid white !important;
-    height: fit-content !important;
+    height: auto !important;
 }
 
 ::placeholder , select{
@@ -81,6 +81,9 @@ input, select, textarea{
     opacity: 0.6;
   }
 
+.fullhide{
+    visibility: none;
+}
 
 .table{
     padding:24px;

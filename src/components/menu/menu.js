@@ -1,12 +1,13 @@
 import React, { Fragment } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
 import './menu.scss';
 
 const Menu = ({routes, setroutes}) => {
+    var endpointpri = window.localStorage.getItem("endpointpri");
 
-    const handleCollapse = e =>{
+    /* const handleCollapse = e =>{
         var element = null;
         if(e.target.tagName === "svg"){
             element = e.target.parentElement.nextElementSibling;
@@ -20,6 +21,28 @@ const Menu = ({routes, setroutes}) => {
         }else{
             element.classList.remove('show');
         }
+    } */
+
+    const sendGetReq = async (endpoint, ansname, body) => {
+            
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': window.localStorage.getItem("token")},
+            body: JSON.stringify(body)
+        };
+        await fetch(endpoint, requestOptions)
+        const answer = await fetch(endpoint, requestOptions)
+            .then(response => {
+                return response.json();
+            });
+            if(!answer.message.includes("Listado")){
+                alert(answer.message);
+            }
+            if(answer.success){
+                // debugger
+                window.localStorage.setItem(ansname, JSON.stringify(answer.data));
+                
+            }
     }
 
     return ( 
@@ -79,7 +102,7 @@ const Menu = ({routes, setroutes}) => {
                     {/* </ul> */}
                 </li>
                 <li>
-                    <h3 onClick={ ()=> setroutes({ route: "UsersSuperList", route_title: "List users"}) } > Users {/* <FontAwesomeIcon icon={faAngleRight}/> */}</h3> 
+                    <h3 onClick={ ()=> {setroutes({ route: "UsersList", route_title: "List Users"}); sendGetReq(endpointpri+"/api/node/user/list", "usersdata",{}); }} > Users {/* <FontAwesomeIcon icon={faAngleRight}/> */}</h3> 
                     {/* <ul className="second_li">
                         <li onClick={ () => setroutes({ route: "UsersCreate", route_title: "Create user"}) }><h4>Create</h4></li>
                         <li onClick={ () => setroutes({ route: "UsersList", route_title: "List users"}) }><h4>List</h4></li>

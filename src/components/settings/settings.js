@@ -2,19 +2,19 @@ import React, { Fragment } from 'react';
 
 import '../form/form.scss';
 import Table from '../table/table';
-import { sleep } from '../../util/sleep';
+// import { sleep } from '../../util/sleep';
 
 
 const Settings = ({ node, setroutes, setgroup, setrole, setpermission }) => {
 
-    const endpointpri = window.localStorage.getItem("endpointpri");
+    // const endpointpri = window.localStorage.getItem("endpointpri");
     var tablegroups = null;
     var tableroles = null;
     var tablepermissions = null;
 
     
     // debugger
-    const sendGetReq = async (endpoint, ansname) => {
+    /* const sendGetReq = async (endpoint, ansname) => {
             
             const requestOptions = {
                 method: 'POST',
@@ -35,7 +35,7 @@ const Settings = ({ node, setroutes, setgroup, setrole, setpermission }) => {
                     
                 }
             
-    }
+    } */
 
     // if(window.localStorage.getItem("groupsdata") !== ""){
     //     debugger
@@ -60,6 +60,7 @@ const Settings = ({ node, setroutes, setgroup, setrole, setpermission }) => {
             refreshname = "App Settings"
             ttitle = "Groups"
             ttitles = {["Name", "Description", "Roles", "Actions"]}
+            secndtaboption = {true}
         />;
     tableroles = 
         <Table
@@ -71,6 +72,7 @@ const Settings = ({ node, setroutes, setgroup, setrole, setpermission }) => {
             refreshname = "App Settings"
             ttitle = "Roles"
             ttitles = {["Name", "Description", "Actions"]}
+            secndtaboption = {true}
         />;
     tablepermissions = 
         <Table
@@ -82,6 +84,7 @@ const Settings = ({ node, setroutes, setgroup, setrole, setpermission }) => {
             refreshname = "App Settings"
             ttitle = "Permissions"
             ttitles = {["Permissiondata", "Description", "Actions"]}
+            secndtaboption = {true}
         />;
 
 
