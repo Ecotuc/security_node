@@ -7,7 +7,7 @@ import './menu.scss';
 const Menu = ({routes, setroutes}) => {
     var endpointpri = window.localStorage.getItem("endpointpri");
 
-    /* const handleCollapse = e =>{
+    const handleCollapse = e =>{
         var element = null;
         if(e.target.tagName === "svg"){
             element = e.target.parentElement.nextElementSibling;
@@ -21,7 +21,7 @@ const Menu = ({routes, setroutes}) => {
         }else{
             element.classList.remove('show');
         }
-    } */
+    }
 
     const sendGetReq = async (endpoint, ansname, body) => {
             
@@ -102,16 +102,16 @@ const Menu = ({routes, setroutes}) => {
                     {/* </ul> */}
                 </li>
                 <li>
-                    <h3 onClick={ ()=> {setroutes({ route: "UsersList", route_title: "List Users"}); sendGetReq(endpointpri+"/api/node/user/list", "usersdata",{}); }} > Users {/* <FontAwesomeIcon icon={faAngleRight}/> */}</h3> 
-                    {/* <ul className="second_li">
+                    <h3 onClick={ e=> {setroutes({ route: "UsersList", route_title: "List Users"}); sendGetReq(endpointpri+"/api/node/user/list", "usersdata",{}); }} > Users {/* <FontAwesomeIcon icon={faAngleRight}/> */}</h3> 
+                    <ul className="second_li">
                         <li onClick={ () => setroutes({ route: "UsersCreate", route_title: "Create user"}) }><h4>Create</h4></li>
-                        <li onClick={ () => setroutes({ route: "UsersList", route_title: "List users"}) }><h4>List</h4></li>
+                        {/* <li onClick={ () => setroutes({ route: "UsersList", route_title: "List users"}) }><h4>List</h4></li>
                         <li onClick={ () => setroutes({ route: "UsersDetails", route_title: "User details"}) }><h4>Details</h4></li>
                         <li onClick={ () => setroutes({ route: "UsersDelete", route_title: "Delete user"}) }><h4>Delete</h4></li>
                         <li onClick={ () => setroutes({ route: "UsersUpdate", route_title: "Update user"}) }><h4>Update</h4></li>
                         <li onClick={ () => setroutes({ route: "UsersRese", route_title: "Reset password"}) }><h4>Reset password</h4></li>
-                        <li onClick={ () => setroutes({ route: "UsersAuthenticate", route_title: "Authenticate user"}) }><h4>Authenticate</h4></li>
-                    </ul> */}
+                        <li onClick={ () => setroutes({ route: "UsersAuthenticate", route_title: "Authenticate user"}) }><h4>Authenticate</h4></li> */}
+                    </ul>
                 </li>
                                
             </ul>

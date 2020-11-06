@@ -29,7 +29,7 @@ export const sendGetReq = async (endpoint, ttitles, trows, table) => {
 }
 const Form = ({routes, setroutes}) => {
   const endpointpri = window.localStorage.getItem("endpointpri");
-
+    var aux = "";
 
     sendGetReq(endpointpri+"/api/node/list", "table_titles", "table_rows", "table");
 
@@ -109,8 +109,9 @@ const Form = ({routes, setroutes}) => {
                 setroutes = { setroutes }
                 />;                
             console.log("Permissions");
-        }else if(route.includes("Users")){
-            route = route.substr(route.indexOf("Users") + 5,route.length);
+        }else if(route.includes("Users") || route.includes("users")){
+            aux = route;
+            route = route.includes("Uusers")? route.substr(route.indexOf("Users") + 7,route.length): route.substr(route.indexOf("Users") + 5,route.length);
             console.log("Users");
             form = 
                 <Users
@@ -120,6 +121,7 @@ const Form = ({routes, setroutes}) => {
                 setuser = { setuser }
                 setroutes = { setroutes }
                 group = { group }
+                route = { aux }
                 />
         }else if(route.includes("Settings")){
             route = route.substr(route.indexOf("Settings") + 8,route.length);

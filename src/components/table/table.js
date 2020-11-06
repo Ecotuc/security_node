@@ -4,7 +4,7 @@ import { sleep } from '../../util/sleep';
 import { toUpperFirst } from '../../util/to_uppercase_first';
 
 
-const Table = ({data, node, setroutes, func, refresh, refreshname, ttitle, ttitles, extradata, secndtaboption}) => {
+const Table = ({data, node, setroutes, func, refresh, refreshname, ttitle, ttitles, extradata, secndtaboption, route}) => {
     // debugger
     // var table = {};
     
@@ -89,6 +89,10 @@ const Table = ({data, node, setroutes, func, refresh, refreshname, ttitle, ttitl
         // update_endpoint = endpointpri +"/api/node/rights/group/update"; 
     }else if(data.includes("role")){
         propid = "roleid";
+        delete_endpoint = endpointpri +"/api/node/rights/role/delete"; 
+        add_endpoint = endpointpri +"/api/node/rights/role/addtouser"; 
+    }else if(data.includes("rlsfromusr")){
+        propid = "rroleid";
         delete_endpoint = endpointpri +"/api/node/rights/role/delete"; 
         // update_endpoint = endpointpri +"/api/node/rights/role/update"; 
     }
@@ -258,16 +262,27 @@ const Table = ({data, node, setroutes, func, refresh, refreshname, ttitle, ttitl
                                 rows.pop();
                             }}>
                             </i>
+                            <i className={route? "fas fa-plus": "fullhide"} onClick={ e => {
+                                window.localStorage.setItem("roleid", element[propid]);
+                                window.localStorage.setItem("timesexecuted", "0");
+                                sendPostReq(e, {nodeid:node, roleid:[element[propid]], userid:[extradata]}, add_endpoint);
+                                // sendGetReq(endpointpri+"/api/node/user/list", "users",{});
+                                sleep(500);
+                                rows = [];
+                                setroutes({ route: "AppSettings", route_title: "App Settings"}); 
+                                rows.pop();
+                            }}>
+                            </i>
         
                         </div>
                     )
                     break;
-                case "poleid":
+                case "rroleid":
                     rows.push(
-                        <div key = {`${propid}act${element["name"]}`} className = "actions">
+                        <div key = {`$roleidact${element["name"]}`} className = "actions">
                             <i className='fas fa-trash-alt' 
                                 onClick = {(e) => {
-                                    sendPostReq(e, {nodeid: node, [propid]:element[propid]}, delete_endpoint);
+                                    sendPostReq(e, {nodeid: node, roleid:element["roleid"]}, delete_endpoint);
                                     setTimeout(() => {
                                         rows = [];
                                         setroutes({ route: "Settings", route_title: "App Settings"});
@@ -278,7 +293,7 @@ const Table = ({data, node, setroutes, func, refresh, refreshname, ttitle, ttitl
                             </i>
                             <i className='fas fa-pencil-alt'onClick = {(e) => {
                                 debugger
-                                func({nodeid: node, [propid]: element[propid], name: element["name"], description: element["description"]});
+                                func({nodeid: node, roleid: element["roleid"], name: element["name"], description: element["description"]});
                                 // sendPostReq(e, {nodeid: element["nodeid"]}, update_endpoint); 
                                 // setnodeinfo({nodeid: element["nodeid"], data:{ name: element["name"], description: element["description"]}});
                                 rows = [];
@@ -287,10 +302,10 @@ const Table = ({data, node, setroutes, func, refresh, refreshname, ttitle, ttitl
                             }}>
         
                             </i>
-                            <i className="fas fa-tools" onClick={ () => {
-                                window.localStorage.setItem("roleid", element[propid]);
+                            <i className="fas fa-plus" onClick={ () => {
+                                window.localStorage.setItem("roleid", element["roleid"]);
                                 window.localStorage.setItem("timesexecuted", "0");
-                                sendGetReq(endpointpri+"/api/node/rights/role/listuser", "usersfromrl", {nodeid:node, data:{roleid:element[propid]}});
+                                sendGetReq(endpointpri+"/api/node/rights/role/listuser", "usersfromrl", {nodeid:node, data:{roleid:element["roleid"]}});
                                 sendGetReq(endpointpri+"/api/node/user/list", "users",{});
                                 sleep(500);
                                 rows = [];
@@ -302,15 +317,17 @@ const Table = ({data, node, setroutes, func, refresh, refreshname, ttitle, ttitl
                         </div>
                     )
                     break;
-                case "userid":
+                    case "userid":
                     rows.push(
                         <div key = {`${propid}act${element["id"]}`} className = "actions">
                              <i className='fas fa-user-cog' 
                                 onClick = {(e) => {
                                     window.localStorage.setItem("timesexecuted", "0");
                                     func({username:element["username"]});
-                                    sendGetReq(endpointpri+"/api/node/user/permissionlist", "prmsfromusr", {nodeid:node, data:{userid:element[propid]}});
+                                    sendGetReq(endpointpri+"/api/node/user/permissionlist", "prmsfromusr", {nodeid:node, data:{userid:element["userid"]}});
                                     sendGetReq(endpointpri+"/node/rights/permission/list", "permissions",{nodeid:node});
+                                    sendGetReq(endpointpri+"/api/node/user/rolelist", "rlsfromusr", {nodeid:node, data:{userid:element["userid"]}});
+                                    sendGetReq(endpointpri+"/node/rights/role/list", "roles",{nodeid:node});
                                     sleep(500);
                                     rows = [];
                                     setroutes({ route: "UsersSettings", route_title:`${element["username"]} Settings`} );
@@ -345,6 +362,8 @@ const Table = ({data, node, setroutes, func, refresh, refreshname, ttitle, ttitl
                                     func({username:element["username"]});
                                     sendGetReq(endpointpri+"/api/node/user/permissionlist", "prmsfromusr", {nodeid:node, data:{userid:element["userid"]}});
                                     sendGetReq(endpointpri+"/api/node/rights/permission/list", "permissions",{nodeid:node});
+                                    sendGetReq(endpointpri+"/api/node/user/rolelist", "rlsfromusr", {nodeid:node, data:{userid:element["userid"]}});
+                                    sendGetReq(endpointpri+"/api/node/rights/role/list", "roles",{nodeid:node});
                                     sleep(500);
                                     
                                     rows = [];
@@ -412,7 +431,7 @@ const Table = ({data, node, setroutes, func, refresh, refreshname, ttitle, ttitl
                             ></i>
 
                             <i 
-                                className={secndtaboption ? "fas fa-plus-circle":"fullhide"} 
+                                className= "fas fa-plus-circle" 
                                 onClick={ () => setroutes({ route: plural_table_name+"Create", route_title: "Create "+ singular_table_name})}
                             ></i>
                         </div>
@@ -456,7 +475,7 @@ const Table = ({data, node, setroutes, func, refresh, refreshname, ttitle, ttitl
                             ></i>
 
                             <i 
-                                className={secndtaboption ? "fas fa-plus-circle":"fullhide"}  
+                                className="fas fa-plus-circle"  
                                 onClick={ () => setroutes({ route: plural_table_name+"Create", route_title: "Create "+ singular_table_name})}
                             ></i>
                         </div>

@@ -9,7 +9,7 @@ import { sleep } from '../../util/sleep';
 import './users.scss';
 
 
-const Users = ( { service, node, user, setuser, setroutes, group } ) => {
+const Users = ( { service, node, user, setuser, setroutes, group, route } ) => {
     // var parse = require('html-react-parser');
     // parse(form)
 
@@ -20,8 +20,10 @@ const Users = ( { service, node, user, setuser, setroutes, group } ) => {
     var form = null;
     var endpoint = "";
     var permissions = null;
+    var roles = null;
     var users = null;
     var allpermissions = [];
+    var allroles = [];
     var usersdata = "";
     var aux = [];
 
@@ -179,10 +181,27 @@ const Users = ( { service, node, user, setuser, setroutes, group } ) => {
                         } 
                     });
                 });
-                window.localStorage.setItem("permissions", JSON.stringify(allpermissions));
+
+            window.localStorage.setItem("permissions", JSON.stringify(allpermissions));
             }else if(aux.length === permissions.length){
                 window.localStorage.setItem("permissions",JSON.stringify(allpermissions));
             }
+            roles = JSON.parse(window.localStorage.getItem("rlsfromusr"));
+            aux = JSON.parse(window.localStorage.getItem("roles"));
+            if (roles.length > 0 && aux.length !== roles.length){
+                aux.forEach(pemission => {
+                    roles.forEach(peruser => {
+                        if(pemission.userid !== peruser.id){
+                            allroles.push(pemission);
+                        } 
+                    });
+                });
+                window.localStorage.setItem("roles", JSON.stringify(allroles));
+            }else if( roles.length !== 0 && aux.length === roles.length){
+                window.localStorage.setItem("roles",JSON.stringify(allroles));
+            }else{
+                window.localStorage.setItem("roles", JSON.stringify(aux));
+            } 
 
 
             form =
@@ -210,6 +229,30 @@ const Users = ( { service, node, user, setuser, setroutes, group } ) => {
                         secndtaboption = {false}
                         extradata = {window.localStorage.getItem("userid")}
                         // extradata ={window.localStorage.getItem("roleid")}
+                    />
+                    <Table
+                        data = "rlsfromusr"
+                        node = { node }
+                        setroutes = { setroutes }
+                        func = { setuser }
+                        refresh = "UsersSettings"
+                        refreshname = {`${username} Settings`}
+                        ttitle = "Roles From User"
+                        ttitles = {["name", "description"]}
+                        secndtaboption = {false}
+                    />
+                    <Table
+                        data = "roles"
+                        node = { node }
+                        setroutes = { setroutes }
+                        func = { setuser }
+                        refresh = "UsersSettings"
+                        refreshname = {`${username} Settings`}
+                        ttitle = "Roles Availables"
+                        ttitles = {["name", "description"]}
+                        secndtaboption = {false}
+                        extradata = {window.localStorage.getItem("userid")}
+                        route ={ route }
                     />
 
                 </Fragment>
