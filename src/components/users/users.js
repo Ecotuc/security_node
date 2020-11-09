@@ -59,6 +59,7 @@ const Users = ( { service, node, user, setuser, setroutes, group, route } ) => {
             [e.target.name]: e.target.value
         })
     }
+
     
     const { username } = user;
 
@@ -173,35 +174,48 @@ const Users = ( { service, node, user, setuser, setroutes, group, route } ) => {
             sleep(500);
             permissions = JSON.parse(window.localStorage.getItem("prmsfromusr"));
             aux = JSON.parse(window.localStorage.getItem("permissions"));
+            var pfuaux = permissions;
             if (permissions.length > 0 && aux.length !== permissions.length){
-                aux.forEach(pemission => {
-                    permissions.forEach(peruser => {
-                        if(pemission.userid !== peruser.id){
-                            allpermissions.push(pemission);
-                        } 
-                    });
-                });
-
-            window.localStorage.setItem("permissions", JSON.stringify(allpermissions));
+                for(var i=0; i<aux.length; i++){
+                    if (pfuaux.length > 0) {
+                        if(aux[i].permissionid === pfuaux[0].permissionid){
+                            pfuaux.splice(0, 1);
+                        }else{
+                            allpermissions.push(aux[i]);
+                        }
+                    }else{
+                        allpermissions.push(aux[i]);
+                    }
+                }
+                
+                window.localStorage.setItem("permissions", JSON.stringify(allpermissions));
             }else if(aux.length === permissions.length){
                 window.localStorage.setItem("permissions",JSON.stringify(allpermissions));
             }
+
+            aux = [];
             roles = JSON.parse(window.localStorage.getItem("rlsfromusr"));
             aux = JSON.parse(window.localStorage.getItem("roles"));
+            var rfuaux = roles;
             if (roles.length > 0 && aux.length !== roles.length){
-                aux.forEach(pemission => {
-                    roles.forEach(peruser => {
-                        if(pemission.userid !== peruser.id){
-                            allroles.push(pemission);
-                        } 
-                    });
-                });
+                for(var j=0; j<aux.length; j++){
+                    if (rfuaux.length > 0) {
+                        if(aux[j].permissionid === rfuaux[0].permissionid){
+                            rfuaux.splice(0, 1);
+                        }else{
+                            allroles.push(aux[j]);
+                        }
+                    }else{
+                        allroles.push(aux[j]);
+                    }
+                }
                 window.localStorage.setItem("roles", JSON.stringify(allroles));
             }else if( roles.length !== 0 && aux.length === roles.length){
                 window.localStorage.setItem("roles",JSON.stringify(allroles));
             }else{
                 window.localStorage.setItem("roles", JSON.stringify(aux));
             } 
+            aux = [];
 
 
             form =

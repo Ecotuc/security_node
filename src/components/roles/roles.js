@@ -59,7 +59,7 @@ const Roles = ( { service, node, role, setrole, setroutes } ) => {
         })
     }
     
-    const { name, description } = role;
+    // const { name, description } = role;
 
     switch (service){
         case "Create":

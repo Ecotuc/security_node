@@ -43,6 +43,9 @@ const Table = ({data, node, setroutes, func, refresh, refreshname, ttitle, ttitl
                 // debugger
                 window.localStorage.setItem(ansname, JSON.stringify(answer.data));
                 
+            }else{
+                window.localStorage.setItem(ansname, JSON.stringify({}));
+
             }
     }
 

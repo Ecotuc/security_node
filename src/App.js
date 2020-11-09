@@ -34,6 +34,7 @@ function App() {
   }
 
   // var enpoint = "http://2a1ce45d1288.ngrok.io";
+  // window.localStorage.setItem("endpointpri","https://auth.zer0th.com");
   window.localStorage.setItem("endpointpri","http://ec2-3-136-116-249.us-east-2.compute.amazonaws.com");
   // window.localStorage.setItem("endpointpri","https://private-aa280a-igsoftwaremoduloseguridad.apiary-mock.com");
 
